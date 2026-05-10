@@ -50,6 +50,7 @@ mae = mean_absolute_error(y_test, y_pred)
 col1, col2 = st.columns(2)
 col1.metric("🎯 R2 Score", f"{r2:.2f}")
 col2.metric("📉 MAE (Sai số trung bình)", f"{int(mae):,} VND")
+st.info(f"Model dự đoán với sai số trung bình ~ {int(mae):,} VND")
 
 # ================= BIỂU ĐỒ =================
 st.subheader("📊 So sánh Giá trị thật vs Dự đoán")
@@ -140,4 +141,4 @@ if os.path.exists("history.csv"):
     st.dataframe(history_df.tail(10))
 else:
     st.write("Chưa có dữ liệu")
-st.info(f"Model dự đoán với sai số trung bình ~ {int(mae):,} VND")
+
