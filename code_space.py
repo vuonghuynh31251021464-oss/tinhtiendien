@@ -21,8 +21,7 @@ df = df.rename(columns={
     'so gio bat may lanh': 'ac_hours',
     'dien tich phong m2': 'area',
     'so tang': 'floor',
-    'loại nha': 'house_type',
-    'Tiền điện': 'bill'
+    'loai nha': 'house_type',
 })
 # =============================
 # 🧠 2. FUZZY LOGIC
