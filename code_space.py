@@ -13,7 +13,17 @@ df = pd.read_csv(FILE_PATH, encoding="utf-8")
 df.columns = df.columns.str.strip()
 
 print("COLUMNS:", df.columns.tolist())
-
+df = df.rename(columns={
+    'nguoi o': 'people',
+    'so may lanh': 'ac',
+    'so quat': 'fan',
+    'tu lanh': 'fridge',
+    'so gio bat may lanh': 'ac_hours',
+    'dien tich phong m2': 'area',
+    'so tang': 'floor',
+    'loại nha': 'house_type',
+    'Tiền điện': 'bill'
+})
 # =============================
 # 🧠 2. FUZZY LOGIC
 # =============================
