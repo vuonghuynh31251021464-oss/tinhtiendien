@@ -1,0 +1,10 @@
+numpy
+scipy
+scikit-fuzzy
+geopy
+folium
+streamlit
+packaging
+networkx
+requests
+polyline
