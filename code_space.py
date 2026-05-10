@@ -39,7 +39,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 model = RandomForestRegressor(n_estimators=120, random_state=42)
 model.fit(X_train, y_train)
-st.info(f"Model dự đoán với sai số trung bình ~ {int(mae):,} VND")
+
 
 # ================= ĐÁNH GIÁ =================
 y_pred = model.predict(X_test)
@@ -140,3 +140,4 @@ if os.path.exists("history.csv"):
     st.dataframe(history_df.tail(10))
 else:
     st.write("Chưa có dữ liệu")
+st.info(f"Model dự đoán với sai số trung bình ~ {int(mae):,} VND")
