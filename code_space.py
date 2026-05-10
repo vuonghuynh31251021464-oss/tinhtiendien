@@ -1,150 +1,60 @@
-import streamlit as st
 import pandas as pd
-import numpy as np
+import streamlit as st
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-import matplotlib.pyplot as plt
 
-# =============================
-# 🔥 1. LOAD DATA CSV
-# =============================
-FILE_PATH = "project4 - Trang tính1.csv"
+# ================= LOAD DATA =================
+df = pd.read_csv("200_ho_gia_dinh_tien_dien.csv")
 
-df = pd.read_csv(FILE_PATH, encoding="utf-8")
-df.columns = df.columns.str.strip()
+# ================= XỬ LÝ DỮ LIỆU =================
+# Encode Có/Không
+df["Co_tu_lanh"] = df["Co_tu_lanh"].map({"Co": 1, "Khong": 0})
 
-print("COLUMNS:", df.columns.tolist())
-df = df.rename(columns={
-    'nguoi o': 'people',
-    'so may lanh': 'ac',
-    'so quat': 'fan',
-    'tu lanh': 'fridge',
-    'so gio bat may lanh': 'ac_hours',
-    'dien tich phong m2': 'area',
-    'so tang': 'floor',
-    'loai nha': 'house_type',
-})
-# =============================
-# 🧠 2. FUZZY LOGIC
-# =============================
-def low(x, a, b):
-    return max(0, min(1, (b - x) / (b - a + 1e-6)))
+# Encode loại nhà
+df = pd.get_dummies(df, columns=["Loai_nha"])
 
-def high(x, a, b):
-    return max(0, min(1, (x - a) / (b - a + 1e-6)))
+# ================= TÁCH INPUT / OUTPUT =================
+X = df.drop(["Tien_dien_thang_VND", "STT"], axis=1)
+y = df["Tien_dien_thang_VND"]
 
-def fuzzy_features(people, ac_hours):
-    people_low = low(people, 1, 3)
-    people_high = high(people, 2, 6)
-
-    ac_low = low(ac_hours, 0, 4)
-    ac_high = high(ac_hours, 4, 10)
-
-    consumption_high = min(people_high, ac_high)
-    consumption_low = min(people_low, ac_low)
-
-    return [
-        people_low,
-        people_high,
-        ac_low,
-        ac_high,
-        consumption_low,
-        consumption_high
-    ]
-
-# =============================
-# 🔧 3. BUILD FEATURE
-# =============================
-def build_features(row):
-    base = [
-        row['people'],
-        row['ac'],
-        row['fan'],
-        row['fridge'],
-        row['ac_hours'],
-        row['area'],
-        row['floor'],
-        row['house_type']
-    ]
-
-    fuzzy = fuzzy_features(row['people'], row['ac_hours'])
-    return base + fuzzy
-
-# =============================
-# 🤖 4. TRAIN MODEL
-# =============================
-required_cols = ['people','ac','fan','fridge','ac_hours','area','floor','house_type','bill']
-missing = [c for c in required_cols if c not in df.columns]
-
-if missing:
-    st.error(f"❌ Thiếu cột: {missing}")
-    st.stop()
-
-X = []
-y = df['bill']
-
-for _, row in df.iterrows():
-    X.append(build_features(row))
-
-model = RandomForestRegressor(n_estimators=100)
+# ================= TRAIN MODEL =================
+model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X, y)
 
-# =============================
-# 🌐 5. STREAMLIT UI
-# =============================
-st.set_page_config(page_title="Electricity AI", layout="centered")
+# ================= GIAO DIỆN =================
+st.title("🔌 App Dự Đoán Tiền Điện Phòng Trọ")
 
-st.title("⚡ Dự đoán tiền điện (AI + Fuzzy)")
+st.write("Nhập thông tin để dự đoán tiền điện:")
 
-people = st.slider("Số người", 1, 10)
-ac = st.slider("Số máy lạnh", 0, 5)
-fan = st.slider("Số quạt", 0, 10)
-fridge = st.selectbox("Có tủ lạnh?", [0, 1])
-ac_hours = st.slider("Giờ dùng máy lạnh", 0, 24)
-area = st.slider("Diện tích", 10, 100)
-floor = st.slider("Tầng", 1, 20)
-house_type = st.selectbox("Loại nhà", ["Trọ", "Chung cư"])
+# INPUT USER
+so_nguoi = st.slider("Số người ở", 1, 10, 2)
+so_may_lanh = st.slider("Số máy lạnh", 0, 5, 1)
+so_quat = st.slider("Số quạt", 0, 10, 2)
+co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"])
+gio_may_lanh = st.slider("Số giờ bật máy lạnh/ngày", 0.0, 24.0, 5.0)
+dien_tich = st.slider("Diện tích phòng (m2)", 10, 200, 30)
+tang = st.slider("Tầng lầu", 1, 30, 1)
+loai_nha = st.selectbox("Loại nhà", ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"])
 
-house_type = 0 if house_type == "Trọ" else 1
+# ================= XỬ LÝ INPUT =================
+input_dict = {
+    "So_nguoi_o": so_nguoi,
+    "So_may_lanh": so_may_lanh,
+    "So_quat": so_quat,
+    "Co_tu_lanh": 1 if co_tu_lanh == "Co" else 0,
+    "So_gio_bat_may_lanh_ngay": gio_may_lanh,
+    "Dien_tich_phong_m2": dien_tich,
+    "Tang_lau": tang,
+}
 
-# =============================
-# 🔮 6. PREDICT
-# =============================
-if st.button("🚀 Dự đoán"):
-    row = {
-        "people": people,
-        "ac": ac,
-        "fan": fan,
-        "fridge": fridge,
-        "ac_hours": ac_hours,
-        "area": area,
-        "floor": floor,
-        "house_type": house_type
-    }
+# thêm cột loại nhà (one-hot)
+for col in X.columns:
+    if "Loai_nha_" in col:
+        input_dict[col] = 1 if col == f"Loai_nha_{loai_nha}" else 0
 
-    features = build_features(row)
-    result = model.predict([features])[0]
+input_df = pd.DataFrame([input_dict])
 
-    st.success(f"💰 Tiền điện dự đoán: {int(result):,} VND")
-
-    # Explain
-    st.subheader("🔍 Giải thích")
-
-    if ac_hours > 6:
-        st.write("- Dùng máy lạnh nhiều → điện tăng")
-    if people > 3:
-        st.write("- Nhiều người → tiêu thụ cao")
-
-    st.write("### Giá trị fuzzy:")
-    st.write(fuzzy_features(people, ac_hours))
-
-# =============================
-# 📊 7. BIỂU ĐỒ
-# =============================
-st.subheader("📈 Phân bố tiền điện")
-
-fig, ax = plt.subplots()
-ax.hist(df['bill'], bins=10)
-ax.set_xlabel("Bill")
-ax.set_ylabel("Count")
-
-st.pyplot(fig)
+# ================= DỰ ĐOÁN =================
+if st.button("Dự đoán"):
+    prediction = model.predict(input_df)[0]
+    st.success(f"💰 Tiền điện dự đoán: {int(prediction):,} VND / tháng")
