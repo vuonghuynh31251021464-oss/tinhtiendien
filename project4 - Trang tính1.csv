@@ -1,0 +1,201 @@
+STT,nguoi o,so may lanh,so quat,tu lanh,so gio bat may lanh,dien tich phong m2,so tang,loai nha
+1,1,2,5,Co,10.8,38,1,Nha cap 4
+2,1,1,1,Khong,4.6,68,4,Nha pho
+3,1,1,3,Co,11.1,92,16,Phong tro
+4,5,1,6,Khong,3.9,12,5,Nha pho
+5,1,3,2,Co,0.2,47,1,Phong tro
+6,4,0,2,Khong,0,108,18,Can ho
+7,3,2,3,Khong,15.9,73,16,Nha pho
+8,2,3,5,Khong,13.2,72,11,Phong tro
+9,2,1,5,Khong,5,47,14,Nha pho
+10,2,1,2,Co,11.1,54,19,Phong tro
+11,7,1,3,Co,9.6,31,11,Can ho
+12,4,2,1,Khong,3.7,64,12,Nha cap 4
+13,5,2,2,Co,10.5,44,15,Can ho
+14,1,0,3,Co,0,40,12,Nha cap 4
+15,6,1,3,Co,15.4,93,16,Can ho
+16,3,1,2,Khong,13.7,16,20,Nha pho
+17,8,0,1,Co,0,27,17,Nha cap 4
+18,2,0,1,Khong,0,69,2,Nha cap 4
+19,3,0,1,Co,0,94,13,Nha cap 4
+20,7,3,3,Co,13.3,107,3,Can ho
+21,5,2,5,Khong,3.7,52,1,Phong tro
+22,5,3,6,Khong,5.4,19,3,Phong tro
+23,8,3,4,Khong,12.5,95,6,Nha cap 4
+24,7,2,4,Co,4.6,26,18,Can ho
+25,6,3,2,Co,15.1,29,2,Can ho
+26,4,1,2,Khong,3.1,92,1,Phong tro
+27,7,0,1,Co,0,46,5,Nha cap 4
+28,1,0,6,Khong,0,19,20,Can ho
+29,7,3,3,Co,16.3,102,18,Nha pho
+30,4,2,3,Co,15.1,53,5,Can ho
+31,7,0,3,Khong,0,15,12,Phong tro
+32,3,1,5,Co,15.9,69,7,Nha pho
+33,6,3,4,Khong,3.2,69,17,Nha pho
+34,6,3,4,Co,11.6,91,5,Nha cap 4
+35,2,0,4,Co,0,94,9,Nha pho
+36,5,0,4,Khong,0,91,17,Nha pho
+37,1,1,5,Khong,15,34,17,Nha cap 4
+38,7,3,1,Khong,17.1,68,2,Nha pho
+39,3,1,4,Co,12.1,12,16,Can ho
+40,3,2,3,Co,3.8,114,18,Nha pho
+41,3,1,4,Khong,5.4,87,14,Phong tro
+42,2,2,3,Khong,10.2,64,2,Can ho
+43,5,3,4,Khong,1.3,39,3,Nha pho
+44,3,2,6,Co,7.4,99,1,Nha pho
+45,5,3,1,Khong,12.1,70,10,Phong tro
+46,2,2,6,Khong,6.3,111,19,Nha cap 4
+47,8,3,3,Khong,12.2,117,15,Nha cap 4
+48,6,2,2,Khong,13.7,75,19,Nha cap 4
+49,4,2,4,Co,15.8,49,20,Nha cap 4
+50,8,3,5,Khong,17.7,118,11,Nha pho
+51,8,0,3,Co,0,33,14,Nha cap 4
+52,8,3,2,Khong,11.1,39,16,Nha pho
+53,3,3,5,Khong,11.4,67,20,Can ho
+54,7,0,3,Co,0,82,12,Can ho
+55,2,0,2,Khong,0,37,11,Can ho
+56,6,3,1,Co,10.5,55,14,Phong tro
+57,1,1,4,Khong,9.1,46,9,Can ho
+58,8,2,1,Co,16.7,88,18,Nha pho
+59,2,0,5,Khong,0,69,10,Phong tro
+60,3,2,5,Co,17.5,62,2,Can ho
+61,7,1,6,Co,4.8,63,13,Nha cap 4
+62,3,3,6,Khong,1.7,67,7,Nha cap 4
+63,1,0,6,Khong,0,96,1,Nha cap 4
+64,3,3,5,Co,14.3,67,5,Can ho
+65,7,0,2,Co,0,112,18,Nha cap 4
+66,3,2,2,Khong,17.8,14,4,Nha pho
+67,8,3,3,Co,15.1,38,13,Phong tro
+68,6,0,5,Khong,0,81,10,Nha pho
+69,7,0,5,Co,0,51,13,Nha pho
+70,2,3,6,Co,6.8,99,6,Nha pho
+71,3,1,6,Co,0.1,109,5,Nha cap 4
+72,5,3,5,Khong,11.8,59,20,Can ho
+73,5,2,2,Khong,11.7,81,7,Can ho
+74,8,0,5,Co,0,104,15,Nha cap 4
+75,8,0,2,Co,0,21,9,Phong tro
+76,2,0,5,Co,0,119,14,Nha pho
+77,1,0,3,Co,0,33,3,Phong tro
+78,7,1,5,Co,16.4,51,19,Nha cap 4
+79,8,1,5,Co,12.7,79,10,Phong tro
+80,5,2,4,Khong,1.8,113,15,Nha cap 4
+81,1,3,6,Co,5.1,104,16,Nha cap 4
+82,5,1,1,Khong,6.8,119,14,Can ho
+83,1,0,2,Co,0,17,5,Can ho
+84,6,2,6,Co,13.8,104,6,Nha pho
+85,7,3,2,Co,8.5,112,2,Nha pho
+86,1,1,6,Co,3.8,118,8,Can ho
+87,6,3,6,Khong,11.1,60,13,Phong tro
+88,6,1,4,Co,8.1,22,11,Nha pho
+89,5,3,5,Khong,4,71,15,Nha pho
+90,3,0,5,Co,0,113,15,Phong tro
+91,1,1,2,Co,5.7,66,20,Nha cap 4
+92,7,2,5,Co,13.8,111,6,Phong tro
+93,2,3,1,Co,13.4,53,20,Nha pho
+94,7,2,4,Co,13.7,40,18,Nha cap 4
+95,6,3,1,Co,8.2,83,3,Nha pho
+96,1,3,1,Co,9.6,36,17,Can ho
+97,8,0,6,Khong,0,48,11,Nha cap 4
+98,4,2,2,Co,4.2,72,5,Phong tro
+99,5,2,6,Co,0.6,65,20,Nha pho
+100,5,3,5,Khong,10.1,86,3,Can ho
+101,4,0,2,Khong,0,115,17,Nha pho
+102,3,1,2,Khong,0.3,28,15,Phong tro
+103,1,2,5,Khong,14.5,68,4,Nha pho
+104,6,3,6,Khong,15.5,46,12,Can ho
+105,7,2,1,Co,12.7,59,6,Phong tro
+106,1,0,3,Co,0,97,20,Phong tro
+107,5,1,1,Khong,6.9,30,17,Nha cap 4
+108,6,0,2,Co,0,55,7,Nha pho
+109,4,0,6,Co,0,54,14,Phong tro
+110,6,1,5,Khong,12.6,27,17,Nha pho
+111,3,0,2,Co,0,31,6,Nha cap 4
+112,4,2,3,Khong,0.1,113,12,Can ho
+113,1,1,4,Khong,4.7,105,17,Can ho
+114,1,2,2,Khong,15.2,15,18,Can ho
+115,2,3,6,Co,15.7,15,10,Phong tro
+116,6,3,3,Khong,11.2,105,19,Nha cap 4
+117,3,3,6,Co,8.9,68,10,Can ho
+118,8,3,6,Co,2.8,38,19,Can ho
+119,3,1,2,Khong,15.9,65,13,Can ho
+120,7,2,3,Co,0.7,68,18,Phong tro
+121,2,3,3,Khong,4.5,15,15,Phong tro
+122,3,1,3,Co,8.5,16,1,Nha cap 4
+123,8,2,2,Co,4.4,119,20,Phong tro
+124,1,2,4,Co,14.5,75,17,Nha cap 4
+125,6,3,1,Co,16.1,63,19,Phong tro
+126,5,2,1,Co,6,95,2,Phong tro
+127,3,1,4,Khong,0.8,24,6,Phong tro
+128,3,0,6,Co,0,34,14,Can ho
+129,6,2,3,Khong,3.3,59,11,Phong tro
+130,4,2,5,Co,11.6,108,14,Phong tro
+131,2,1,3,Khong,1.7,104,3,Nha pho
+132,4,3,6,Co,6.7,25,9,Nha pho
+133,8,2,6,Khong,10.7,51,1,Nha pho
+134,5,3,3,Co,11.7,112,11,Nha cap 4
+135,6,3,1,Co,12.1,53,13,Phong tro
+136,3,2,1,Co,17.9,57,10,Phong tro
+137,7,0,6,Khong,0,93,8,Nha pho
+138,7,1,6,Co,11.9,78,17,Nha cap 4
+139,8,2,5,Co,1.3,48,7,Phong tro
+140,6,3,4,Khong,9.9,25,16,Phong tro
+141,6,2,3,Co,0.7,34,10,Phong tro
+142,5,2,6,Co,13.3,50,3,Can ho
+143,4,2,6,Khong,1.7,43,15,Nha cap 4
+144,4,0,5,Co,0,72,4,Phong tro
+145,2,0,1,Co,0,12,7,Nha cap 4
+146,6,3,6,Khong,0.4,112,8,Nha pho
+147,1,0,3,Khong,0,16,4,Nha cap 4
+148,5,3,4,Khong,14.8,119,14,Nha pho
+149,5,1,6,Co,12.3,53,3,Nha pho
+150,1,2,3,Co,4.1,53,14,Phong tro
+151,6,0,4,Co,0,118,13,Nha pho
+152,4,2,1,Khong,12.6,50,8,Can ho
+153,1,2,1,Khong,3.1,62,15,Can ho
+154,7,0,4,Co,0,25,1,Nha pho
+155,3,3,2,Co,6.4,75,2,Can ho
+156,5,2,4,Khong,16.9,72,20,Nha pho
+157,6,2,5,Khong,2.2,29,12,Nha pho
+158,5,1,2,Khong,5.1,105,20,Can ho
+159,4,2,4,Co,2.2,26,15,Phong tro
+160,3,1,5,Khong,9.9,96,8,Can ho
+161,4,2,4,Co,7.9,20,20,Nha pho
+162,3,2,2,Co,2.2,97,3,Phong tro
+163,6,1,3,Khong,13.1,88,11,Nha cap 4
+164,1,1,6,Co,5.1,36,16,Nha cap 4
+165,8,1,5,Khong,8.9,69,8,Nha pho
+166,6,0,1,Co,0,21,12,Nha cap 4
+167,2,1,4,Khong,1.4,36,15,Can ho
+168,6,2,2,Khong,12.5,42,20,Nha pho
+169,1,3,2,Khong,5,99,7,Can ho
+170,4,0,3,Khong,0,78,10,Nha cap 4
+171,6,1,4,Khong,13.1,72,4,Can ho
+172,5,3,6,Khong,12.5,90,3,Nha pho
+173,8,0,4,Co,0,34,7,Can ho
+174,2,2,3,Khong,15.4,56,2,Nha pho
+175,6,0,4,Co,0,38,9,Nha pho
+176,6,3,5,Khong,14.9,24,19,Nha pho
+177,1,0,2,Co,0,107,7,Nha pho
+178,2,1,1,Co,12.7,96,16,Nha pho
+179,5,2,4,Co,1.4,39,19,Nha cap 4
+180,3,1,6,Khong,11.6,98,11,Nha cap 4
+181,2,0,6,Khong,0,69,2,Phong tro
+182,6,1,3,Khong,16.8,14,8,Phong tro
+183,5,0,6,Co,0,69,5,Nha cap 4
+184,2,3,3,Khong,1.9,38,16,Nha cap 4
+185,1,1,6,Khong,5.4,17,3,Nha cap 4
+186,4,3,2,Khong,9.1,99,14,Can ho
+187,3,2,5,Khong,16.7,108,3,Phong tro
+188,2,0,1,Khong,0,106,20,Nha pho
+189,4,3,4,Khong,12.9,53,18,Phong tro
+190,2,3,4,Khong,6.5,41,13,Can ho
+191,2,1,5,Co,13.5,79,6,Nha pho
+192,1,2,6,Khong,0.3,13,20,Phong tro
+193,7,0,1,Co,0,114,8,Nha pho
+194,4,2,1,Khong,8.6,96,19,Nha pho
+195,3,3,2,Co,15.1,26,1,Nha cap 4
+196,8,0,6,Co,0,28,12,Nha cap 4
+197,2,2,5,Co,16.5,23,11,Nha cap 4
+198,6,1,6,Co,5.5,44,7,Phong tro
+199,6,3,6,Khong,15.2,114,10,Phong tro
+200,3,3,2,Khong,15.2,20,3,Nha pho
