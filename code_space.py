@@ -2,39 +2,97 @@ import pandas as pd
 import streamlit as st
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score, mean_absolute_error
+import matplotlib.pyplot as plt
+
+# ================= CẤU HÌNH TRANG =================
+st.set_page_config(page_title="Dự đoán tiền điện", layout="wide")
+
+st.markdown("""
+<style>
+.big-title {font-size:40px; font-weight:bold; color:#00c3ff;}
+.card {
+    background-color:#1e1e1e;
+    padding:20px;
+    border-radius:15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="big-title">⚡ AI Dự Đoán Tiền Điện</p>', unsafe_allow_html=True)
 
 # ================= LOAD DATA =================
 df = pd.read_csv("200_ho_gia_dinh_tien_dien.csv")
 
-# ================= XỬ LÝ DỮ LIỆU =================
-# Encode Có/Không
+# ================= XỬ LÝ =================
 df["Co_tu_lanh"] = df["Co_tu_lanh"].map({"Co": 1, "Khong": 0})
-
-# Encode loại nhà
 df = pd.get_dummies(df, columns=["Loai_nha"])
 
-# ================= TÁCH INPUT / OUTPUT =================
 X = df.drop(["Tien_dien_thang_VND", "STT"], axis=1)
 y = df["Tien_dien_thang_VND"]
 
-# ================= TRAIN MODEL =================
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-model.fit(X, y)
+# ================= TRAIN / TEST =================
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-# ================= GIAO DIỆN =================
-st.title("🔌 App Dự Đoán Tiền Điện Phòng Trọ")
+model = RandomForestRegressor(n_estimators=120, random_state=42)
+model.fit(X_train, y_train)
 
-st.write("Nhập thông tin để dự đoán tiền điện:")
+# ================= ĐÁNH GIÁ =================
+y_pred = model.predict(X_test)
 
-# INPUT USER
-so_nguoi = st.slider("Số người ở", 1, 10, 2)
-so_may_lanh = st.slider("Số máy lạnh", 0, 5, 1)
-so_quat = st.slider("Số quạt", 0, 10, 2)
-co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"])
-gio_may_lanh = st.slider("Số giờ bật máy lạnh/ngày", 0.0, 24.0, 5.0)
-dien_tich = st.slider("Diện tích phòng (m2)", 10, 200, 30)
-tang = st.slider("Tầng lầu", 1, 30, 1)
-loai_nha = st.selectbox("Loại nhà", ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"])
+r2 = r2_score(y_test, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
+
+col1, col2 = st.columns(2)
+col1.metric("🎯 R2 Score", f"{r2:.2f}")
+col2.metric("📉 MAE (Sai số trung bình)", f"{int(mae):,} VND")
+
+# ================= BIỂU ĐỒ =================
+st.subheader("📊 So sánh Giá trị thật vs Dự đoán")
+
+fig = plt.figure()
+plt.scatter(y_test, y_pred)
+plt.xlabel("Thực tế")
+plt.ylabel("Dự đoán")
+plt.title("Actual vs Predicted")
+
+st.pyplot(fig)
+
+# ================= FEATURE IMPORTANCE =================
+st.subheader("🔥 Mức độ ảnh hưởng của các yếu tố")
+
+importance = model.feature_importances_
+feature_names = X.columns
+
+imp_df = pd.DataFrame({
+    "Feature": feature_names,
+    "Importance": importance
+}).sort_values(by="Importance", ascending=False)
+
+fig2 = plt.figure()
+plt.barh(imp_df["Feature"], imp_df["Importance"])
+plt.gca().invert_yaxis()
+plt.title("Feature Importance")
+
+st.pyplot(fig2)
+
+# ================= INPUT USER =================
+st.subheader("🧠 Nhập thông tin dự đoán")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    so_nguoi = st.slider("Số người ở", 1, 10, 2)
+    so_may_lanh = st.slider("Số máy lạnh", 0, 5, 1)
+    so_quat = st.slider("Số quạt", 0, 10, 2)
+    co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"])
+
+with col2:
+    gio_may_lanh = st.slider("Giờ dùng máy lạnh", 0.0, 24.0, 5.0)
+    dien_tich = st.slider("Diện tích (m2)", 10, 200, 30)
+    tang = st.slider("Tầng", 1, 30, 1)
+    loai_nha = st.selectbox("Loại nhà", ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"])
 
 # ================= XỬ LÝ INPUT =================
 input_dict = {
@@ -47,7 +105,6 @@ input_dict = {
     "Tang_lau": tang,
 }
 
-# thêm cột loại nhà (one-hot)
 for col in X.columns:
     if "Loai_nha_" in col:
         input_dict[col] = 1 if col == f"Loai_nha_{loai_nha}" else 0
@@ -55,6 +112,6 @@ for col in X.columns:
 input_df = pd.DataFrame([input_dict])
 
 # ================= DỰ ĐOÁN =================
-if st.button("Dự đoán"):
+if st.button("🚀 Dự đoán ngay"):
     prediction = model.predict(input_df)[0]
-    st.success(f"💰 Tiền điện dự đoán: {int(prediction):,} VND / tháng")
+    st.success(f"💰 Tiền điện dự đoán: {int(prediction):,} VND/tháng")
