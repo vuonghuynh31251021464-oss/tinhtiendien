@@ -4,6 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score, mean_absolute_error
 import matplotlib.pyplot as plt
+import os
+from datetime import datetime
 
 # ================= CẤU HÌNH TRANG =================
 st.set_page_config(page_title="Dự đoán tiền điện", layout="wide")
@@ -33,10 +35,11 @@ X = df.drop(["Tien_dien_thang_VND", "STT"], axis=1)
 y = df["Tien_dien_thang_VND"]
 
 # ================= TRAIN / TEST =================
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 model = RandomForestRegressor(n_estimators=120, random_state=42)
 model.fit(X_train, y_train)
+st.info(f"Model dự đoán với sai số trung bình ~ {int(mae):,} VND")
 
 # ================= ĐÁNH GIÁ =================
 y_pred = model.predict(X_test)
@@ -115,3 +118,25 @@ input_df = pd.DataFrame([input_dict])
 if st.button("🚀 Dự đoán ngay"):
     prediction = model.predict(input_df)[0]
     st.success(f"💰 Tiền điện dự đoán: {int(prediction):,} VND/tháng")
+
+    # ===== LƯU HISTORY =====
+    history_file = "history.csv"
+
+    record = input_dict.copy()
+    record["Tien_du_doan"] = int(prediction)
+    record["Thoi_gian"] = datetime.now()
+
+    if os.path.exists(history_file):
+        old = pd.read_csv(history_file)
+        new = pd.concat([old, pd.DataFrame([record])], ignore_index=True)
+    else:
+        new = pd.DataFrame([record])
+
+    new.to_csv(history_file, index=False)
+st.subheader("📜 Lịch sử dự đoán")
+
+if os.path.exists("history.csv"):
+    history_df = pd.read_csv("history.csv")
+    st.dataframe(history_df.tail(10))
+else:
+    st.write("Chưa có dữ liệu")
