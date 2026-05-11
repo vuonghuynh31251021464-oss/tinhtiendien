@@ -9,31 +9,69 @@ from datetime import datetime
 import numpy as np
 
 # ================= CẤU HÌNH =================
-st.set_page_config(page_title="Dự đoán tiền điện", layout="wide")
+st.set_page_config(page_title="Ezetric - AI Tiền Điện", layout="wide")
 
+# ===== CSS HIỆN ĐẠI MÀU XANH =====
 st.markdown("""
 <style>
-.big-title {font-size:40px; font-weight:bold; color:#00c3ff;}
+/* nền tổng */
+.stApp {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+}
+
+/* title */
+.big-title {
+    font-size:42px;
+    font-weight:bold;
+    text-align:center;
+    color:#00c6ff;
+}
+
+/* card */
+.block-container {
+    padding: 2rem 3rem;
+}
+
+div[data-testid="metric-container"] {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+/* button */
+.stButton>button {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    height: 3em;
+}
+
+/* sidebar */
+section[data-testid="stSidebar"] {
+    background: #0f2027;
+}
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<p class="big-title">⚡ AI Dự Đoán Tiền Điện</p>', unsafe_allow_html=True)
+# ===== TITLE =====
+st.markdown('<p class="big-title">⚡ EZETRIC</p>', unsafe_allow_html=True)
+st.markdown("<center>AI dự đoán tiền điện thông minh</center>", unsafe_allow_html=True)
 
-# ================= SIDEBAR INFO (THÊM) =================
+# ================= SIDEBAR INFO =================
 st.sidebar.markdown("## 📄 Thông tin dự án")
 st.sidebar.write("""
-- 📊 Dữ liệu: 200 hộ gia đình (giả lập khảo sát)
-- ⚠️ Bias: dữ liệu nhỏ, chưa phản ánh toàn bộ thực tế
-- 🧹 Data cleaning:
-    - Encode Có/Không → 1/0
-    - One-hot encoding loại nhà
+- 📊 Dữ liệu: 200 hộ gia đình (giả lập)
+- ⚠️ Bias: dữ liệu nhỏ
+- 🧹 Data cleaning: encode + one-hot
 - 🤖 Model: Random Forest
 """)
 
 # ================= MENU =================
 menu = st.sidebar.radio(
-    "📌 Chọn chức năng",
-    ["📊 Khảo sát & Dự đoán", "📈 Phân tích 200 hộ dân"]
+    "📌 Chức năng",
+    ["📊 Khảo sát & Dự đoán", "📈 Phân tích dữ liệu"]
 )
 
 # ================= LOAD DATA =================
@@ -57,7 +95,7 @@ model.fit(X_train, y_train)
 # ================= MỤC 1 =================
 if menu == "📊 Khảo sát & Dự đoán":
 
-    st.header("🧠 Nhập thông tin dự đoán")
+    st.header("🧠 Nhập thông tin")
 
     col1, col2 = st.columns(2)
 
@@ -68,12 +106,11 @@ if menu == "📊 Khảo sát & Dự đoán":
         co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"])
 
     with col2:
-        gio_may_lanh = st.slider("Giờ dùng máy lạnh", 0.0, 24.0, 5.0)
-        dien_tich = st.slider("Diện tích (m2)", 10, 200, 30)
+        gio_may_lanh = st.slider("Giờ máy lạnh", 0.0, 24.0, 5.0)
+        dien_tich = st.slider("Diện tích", 10, 200, 30)
         tang = st.slider("Tầng", 1, 30, 1)
         loai_nha = st.selectbox("Loại nhà", ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"])
 
-    # ===== XỬ LÝ INPUT =====
     input_dict = {
         "So_nguoi_o": so_nguoi,
         "So_may_lanh": so_may_lanh,
@@ -90,12 +127,10 @@ if menu == "📊 Khảo sát & Dự đoán":
 
     input_df = pd.DataFrame([input_dict])
 
-    # ===== DỰ ĐOÁN =====
     if st.button("🚀 Dự đoán ngay"):
         prediction = model.predict(input_df)[0]
-        st.success(f"💰 Tiền điện dự đoán: {int(prediction):,} VND/tháng")
+        st.success(f"💰 {int(prediction):,} VND / tháng")
 
-        # ===== LƯU HISTORY =====
         history_file = "history.csv"
 
         record = input_dict.copy()
@@ -110,8 +145,7 @@ if menu == "📊 Khảo sát & Dự đoán":
 
         new.to_csv(history_file, index=False)
 
-    # ===== HIỂN THỊ HISTORY =====
-    st.subheader("📜 Lịch sử dự đoán")
+    st.subheader("📜 Lịch sử")
 
     if os.path.exists("history.csv"):
         history_df = pd.read_csv("history.csv")
@@ -120,37 +154,28 @@ if menu == "📊 Khảo sát & Dự đoán":
         st.write("Chưa có dữ liệu")
 
 # ================= MỤC 2 =================
-elif menu == "📈 Phân tích 200 hộ dân":
+elif menu == "📈 Phân tích dữ liệu":
 
-    st.header("📊 Phân tích dữ liệu 200 hộ")
+    st.header("📊 Phân tích AI")
 
-    # ===== ĐÁNH GIÁ =====
     y_pred = model.predict(X_test)
 
     r2 = r2_score(y_test, y_pred)
     mae = mean_absolute_error(y_test, y_pred)
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))  # THÊM
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("🎯 R2 Score", f"{r2:.2f}")
-    col2.metric("📉 MAE", f"{int(mae):,} VND")
-    col3.metric("📊 RMSE", f"{int(rmse):,} VND")  # THÊM
+    col1.metric("R2", f"{r2:.2f}")
+    col2.metric("MAE", f"{int(mae):,}")
+    col3.metric("RMSE", f"{int(rmse):,}")
 
-    st.info(f"Sai số trung bình khoảng {int(mae):,} VND")
-
-    # ===== BIỂU ĐỒ =====
-    st.subheader("So sánh Thực tế vs Dự đoán")
+    st.subheader("So sánh thực tế vs dự đoán")
 
     fig = plt.figure()
     plt.scatter(y_test, y_pred)
-    plt.xlabel("Thực tế")
-    plt.ylabel("Dự đoán")
-    plt.title("Actual vs Predicted")
-
     st.pyplot(fig)
 
-    # ===== FEATURE IMPORTANCE =====
-    st.subheader("🔥 Mức độ ảnh hưởng")
+    st.subheader("Ảnh hưởng yếu tố")
 
     importance = model.feature_importances_
     feature_names = X.columns
@@ -163,9 +188,7 @@ elif menu == "📈 Phân tích 200 hộ dân":
     fig2 = plt.figure()
     plt.barh(imp_df["Feature"], imp_df["Importance"])
     plt.gca().invert_yaxis()
-
     st.pyplot(fig2)
 
-    # ===== XEM DATA =====
-    st.subheader("📋 Dữ liệu mẫu")
+    st.subheader("Dữ liệu mẫu")
     st.dataframe(df.head(20))
