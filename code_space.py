@@ -12,15 +12,10 @@ import numpy as np
 st.set_page_config(page_title="Ezetric - AI Tiền Điện", layout="wide")
 st.markdown("""
 <style>
-
-/* thanh slider */
+/* CHỈ đổi màu thanh slider */
 .stSlider > div[data-baseweb="slider"] > div > div {
-    background-color: #FFD700 !important;  /* vàng */
+    background-color: #FFD700 !important;
 }
-
-
-
-
 </style>
 """, unsafe_allow_html=True)
 # ===== CSS HIỆN ĐẠI MÀU XANH =====
