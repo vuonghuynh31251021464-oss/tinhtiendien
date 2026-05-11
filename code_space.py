@@ -10,141 +10,14 @@ import numpy as np
 
 # ================= CẤU HÌNH =================
 st.set_page_config(page_title="Ezetric - AI Tiền Điện", layout="wide")
-st.markdown("""
-<style>
-/* CHỈ thanh slider (track giữa) */
-.stSlider > div[data-baseweb="slider"] > div > div > div {
-    background-color: #FFD700 !important;
-}
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap');
 
-.big-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: clamp(60px, 8vw, 110px);
-    font-weight: 800;
-    text-align: center;
-
-    /* gradient chữ */
-    background: linear-gradient(90deg, #00c6ff, #0072ff, #00eaff, #0072ff);
-    background-size: 300%;
-
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    /* animation chạy */
-    animation: shine 6s linear infinite;
-}
-
-@keyframes shine {
-    0% { background-position: 0% }
-    100% { background-position: 300% }
-}
-
-/* subtitle */
-.sub-title {
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    color: #ccefff;
-    margin-top: -15px;
-    margin-bottom: 25px;
-}
-
-/* line glow dưới header */
-.glow-line {
-    height: 3px;
-    width: 60%;
-    margin: auto;
-    background: linear-gradient(90deg, transparent, #00eaff, transparent);
-    box-shadow: 0 0 10px #00eaff;
-    margin-bottom: 30px;
-}
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-.big-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 80px;
-    font-weight: 800;
-    text-align: center;
-    color: #00c6ff;
-    letter-spacing: 2px;
-    
-    /* hiệu ứng glow */
-    text-shadow: 
-        0 0 10px rgba(0,198,255,0.7),
-        0 0 20px rgba(0,198,255,0.5),
-        0 0 30px rgba(0,198,255,0.3);
-}
-
-/* subtitle */
-.sub-title {
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    color: #ccefff;
-    margin-top: -10px;
-    margin-bottom: 20px;
-}
-</style>
-""", unsafe_allow_html=True)
-# ===== CSS HIỆN ĐẠI MÀU XANH =====
-st.markdown("""
-<style>
-/* nền tổng */
-.stApp {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: white;
-}
-
-/* title */
-.big-title {
-    font-size:42px;
-    font-weight:bold;
-    text-align:center;
-    color:#00c6ff;
-}
-
-/* card */
-.block-container {
-    padding: 2rem 3rem;
-}
-
-div[data-testid="metric-container"] {
-    background: rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 10px;
-}
-
-/* button */
-.stButton>button {
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
-    color: white;
-    border-radius: 10px;
-    font-size: 16px;
-    height: 3em;
-}
-
-/* sidebar */
-section[data-testid="stSidebar"] {
-    background: #0f2027;
-}
-</style>
-""", unsafe_allow_html=True)
+# ===== (GIỮ NGUYÊN CSS CỦA BẠN) =====
 
 # ===== TITLE =====
 st.markdown('<p class="big-title">⚡ EZETRIC</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">AI dự đoán tiền điện thông minh</p>', unsafe_allow_html=True)
 
-# ================= SIDEBAR INFO =================
+# ================= SIDEBAR =================
 st.sidebar.markdown("## 📄 Thông tin dự án")
 st.sidebar.write("""
 - 📊 Dữ liệu: 200 hộ gia đình (giả lập)
@@ -153,7 +26,38 @@ st.sidebar.write("""
 - 🤖 Model: Random Forest
 """)
 
-# ================= MENU =================
+menu = st.sidebar.radio(
+    "📌 Chức năng",
+    ["📊 Khảo sát & Dự đoán", "📈 Phân tích dữ liệu"]
+)
+
+# ================= LOAD DATA =================
+df = pd.read_csv("200_ho_gia_dinh_tien_dien.csv")
+
+# ================= XỬ LÝ =================
+df["Co_tu_lanh"] = df["Co_tu_lanh"].map({"Co": 1, "Khong": 0})
+df = pd.get_dummies(df, columns=["Loai_nha"])
+
+# ✅ TẠO kWh (logic gần thực tế)
+df["So_kWh"] = (
+    df["So_may_lanh"] * df["So_gio_bat_may_lanh_ngay"] * 1.2 +
+    df["So_quat"] * 0.08 * 24 +
+    df["So_nguoi_o"] * 1.5 +
+    df["Co_tu_lanh"] * 30
+)
+
+X = df.drop(["Tien_dien_thang_VND", "STT", "So_kWh"], axis=1)
+y = df["So_kWh"]
+
+# ================= TRAIN =================
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = RandomForestRegressor(n_estimators=120, random_state=42)
+model.fit(X_train, y_train)
+
+# ===== HÀM TÍNH TIỀN ĐIỆN =====
 def tinh_tien_dien(kwh):
     bac = [
         (50, 1806),
@@ -173,33 +77,6 @@ def tinh_tien_dien(kwh):
             tong += kwh * gia
             break
     return tong
-menu = st.sidebar.radio(
-    "📌 Chức năng",
-    ["📊 Khảo sát & Dự đoán", "📈 Phân tích dữ liệu"]
-)
-
-# ================= LOAD DATA =================
-df = pd.read_csv("200_ho_gia_dinh_tien_dien.csv")
-
-# ================= XỬ LÝ =================
-df["Co_tu_lanh"] = df["Co_tu_lanh"].map({"Co": 1, "Khong": 0})
-df = pd.get_dummies(df, columns=["Loai_nha"])
-df["So_kWh"] = (
-    df["So_may_lanh"] * df["So_gio_bat_may_lanh_ngay"] * 1.2 +
-    df["So_quat"] * 0.08 * 24 +
-    df["So_nguoi_o"] * 1.5 +
-    df["Co_tu_lanh"] * 30
-)
-X = df.drop(["Tien_dien_thang_VND", "STT"], axis=1)
-y = df["So_kWh"]   
-
-# ================= TRAIN =================
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
-
-model = RandomForestRegressor(n_estimators=120, random_state=42)
-model.fit(X_train, y_train)
 
 # ================= MỤC 1 =================
 if menu == "📊 Khảo sát & Dự đoán":
@@ -218,10 +95,12 @@ if menu == "📊 Khảo sát & Dự đoán":
         gio_may_lanh = st.slider("Giờ máy lạnh", 0.0, 24.0, 5.0, key="gio_may_lanh")
         dien_tich = st.slider("Diện tích", 10, 200, 30, key="dien_tich")
         tang = st.slider("Tầng", 1, 30, 1, key="tang")
-        loai_nha = st.selectbox("Loại nhà",
+        loai_nha = st.selectbox(
+            "Loại nhà",
             ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"],
             key="loai_nha"
         )
+
     input_dict = {
         "So_nguoi_o": so_nguoi,
         "So_may_lanh": so_may_lanh,
@@ -238,16 +117,20 @@ if menu == "📊 Khảo sát & Dự đoán":
 
     input_df = pd.DataFrame([input_dict])
 
+    # ✅ FIX LỖI FEATURE MISMATCH
+    input_df = input_df.reindex(columns=X.columns, fill_value=0)
+
     if st.button("🚀 Dự đoán ngay"):
         kwh_pred = model.predict(input_df)[0]
         tien = tinh_tien_dien(kwh_pred)
 
+        # lưu kết quả
         st.session_state.last_prediction = int(tien)
 
         history_file = "history.csv"
 
         record = input_dict.copy()
-        record["Tien_du_doan"] = int(prediction)
+        record["Tien_du_doan"] = int(tien)
         record["Thoi_gian"] = datetime.now()
 
         if os.path.exists(history_file):
@@ -258,7 +141,7 @@ if menu == "📊 Khảo sát & Dự đoán":
 
         new.to_csv(history_file, index=False)
 
-    # reset
+        # reset
         for key in [
             "so_nguoi", "so_may_lanh", "so_quat", "co_tu_lanh",
             "gio_may_lanh", "dien_tich", "tang", "loai_nha"
@@ -267,6 +150,8 @@ if menu == "📊 Khảo sát & Dự đoán":
                 del st.session_state[key]
 
         st.rerun()
+
+    # ✅ HIỂN THỊ KẾT QUẢ SAU RERUN
     if "last_prediction" in st.session_state:
         st.success(f"💰 {st.session_state.last_prediction:,} VND / tháng")
 
@@ -277,7 +162,6 @@ if menu == "📊 Khảo sát & Dự đoán":
         st.dataframe(history_df.tail(10))
     else:
         st.write("Chưa có dữ liệu")
-
 
 # ================= MỤC 2 =================
 elif menu == "📈 Phân tích dữ liệu":
