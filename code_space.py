@@ -185,11 +185,15 @@ if menu == "📊 Khảo sát & Dự đoán":
     col1, col2 = st.columns(2)
 
     with col1:
-        so_nguoi = st.slider("Số người ở", 1, 10, 2)
-        so_may_lanh = st.slider("Số máy lạnh", 0, 5, 1)
-        so_quat = st.slider("Số quạt", 0, 10, 2)
-        co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"])
+        so_nguoi = st.slider("Số người ở", 1, 10, 2, key="so_nguoi")
+        so_may_lanh = st.slider("Số máy lạnh", 0, 5, 1, key="so_may_lanh")
+        so_quat = st.slider("Số quạt", 0, 10, 2, key="so_quat")
+        co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"], key="co_tu_lanh")
 
+        gio_may_lanh = st.slider("Giờ máy lạnh", 0.0, 24.0, 5.0, key="gio_may_lanh")
+        dien_tich = st.slider("Diện tích", 10, 200, 30, key="dien_tich")
+        tang = st.slider("Tầng", 1, 30, 1, key="tang")
+        loai_nha = st.selectbox("Loại nhà", ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"], key="loai_nha")
     with col2:
         gio_may_lanh = st.slider("Giờ máy lạnh", 0.0, 24.0, 5.0)
         dien_tich = st.slider("Diện tích", 10, 200, 30)
@@ -221,6 +225,16 @@ if menu == "📊 Khảo sát & Dự đoán":
         record = input_dict.copy()
         record["Tien_du_doan"] = int(prediction)
         record["Thoi_gian"] = datetime.now()
+        # RESET về mặc định
+        st.session_state.so_nguoi = 2
+        st.session_state.so_may_lanh = 1
+        st.session_state.so_quat = 2
+        st.session_state.co_tu_lanh = "Co"
+
+        st.session_state.gio_may_lanh = 5.0
+        st.session_state.dien_tich = 30
+        st.session_state.tang = 1
+        st.session_state.loai_nha = "Phong tro"
 
         if os.path.exists(history_file):
             old = pd.read_csv(history_file)
@@ -237,6 +251,7 @@ if menu == "📊 Khảo sát & Dự đoán":
         st.dataframe(history_df.tail(10))
     else:
         st.write("Chưa có dữ liệu")
+
 
 # ================= MỤC 2 =================
 elif menu == "📈 Phân tích dữ liệu":
