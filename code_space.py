@@ -10,7 +10,27 @@ import numpy as np
 
 # ================= CẤU HÌNH =================
 st.set_page_config(page_title="Ezetric - AI Tiền Điện", layout="wide")
+st.markdown("""
+<style>
 
+/* thanh slider */
+.stSlider > div[data-baseweb="slider"] > div > div {
+    background-color: #FFD700 !important;  /* vàng */
+}
+
+/* nút tròn slider */
+.stSlider > div[data-baseweb="slider"] span[role="slider"] {
+    background-color: #FFD700 !important;
+    border-color: #FFD700 !important;
+}
+
+/* số trên slider */
+.stSlider label {
+    color: #FFD700 !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 # ===== CSS HIỆN ĐẠI MÀU XANH =====
 st.markdown("""
 <style>
