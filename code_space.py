@@ -191,11 +191,13 @@ if menu == "📊 Khảo sát & Dự đoán":
         co_tu_lanh = st.selectbox("Có tủ lạnh?", ["Co", "Khong"], key="co_tu_lanh")
 
     with col2:
-        gio_may_lanh = st.slider("Giờ máy lạnh", 0.0, 24.0, 5.0)
-        dien_tich = st.slider("Diện tích", 10, 200, 30)
-        tang = st.slider("Tầng", 1, 30, 1)
-        loai_nha = st.selectbox("Loại nhà", ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"])
-
+        gio_may_lanh = st.slider("Giờ máy lạnh", 0.0, 24.0, 5.0, key="gio_may_lanh")
+        dien_tich = st.slider("Diện tích", 10, 200, 30, key="dien_tich")
+        tang = st.slider("Tầng", 1, 30, 1, key="tang")
+        loai_nha = st.selectbox("Loại nhà",
+            ["Phong tro", "Can ho", "Nha cap 4", "Nha pho"],
+            key="loai_nha"
+        )
     input_dict = {
         "So_nguoi_o": so_nguoi,
         "So_may_lanh": so_may_lanh,
