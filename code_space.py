@@ -192,33 +192,58 @@ if menu == "📊 Khảo sát & Dự đoán":
     input_df = input_df.reindex(columns=X.columns, fill_value=0)
 
     if st.button("🚀 Dự đoán ngay"):
+
+    # ===== AI đang suy nghĩ =====
+    with st.spinner("🤖 AI đang phân tích dữ liệu..."):
+        import time
+        time.sleep(1.5)  # delay cho mượt
+
         kwh_pred = model.predict(input_df)[0]
         tien = tinh_tien_dien(kwh_pred)
 
-        st.session_state.last_prediction = int(tien)
+    # ===== ANIMATION TIỀN =====
+    placeholder = st.empty()
 
-        history_file = "history.csv"
+    final_money = int(tien)
+    current = 0
 
-        record = input_dict.copy()
-        record["Tien_du_doan"] = int(tien)
-        record["Thoi_gian"] = datetime.now()
+    step = max(final_money // 50, 1)
 
-        if os.path.exists(history_file):
-            old = pd.read_csv(history_file)
-            new = pd.concat([old, pd.DataFrame([record])], ignore_index=True)
-        else:
-            new = pd.DataFrame([record])
+    while current < final_money:
+        current += step
+        if current > final_money:
+            current = final_money
 
-        new.to_csv(history_file, index=False)
+        placeholder.success(f"💰 {current:,} VND / tháng")
+        time.sleep(0.02)
 
-        for key in [
-            "so_nguoi","so_may_lanh","so_quat","co_tu_lanh",
-            "gio_may_lanh","dien_tich","tang","loai_nha"
-        ]:
-            if key in st.session_state:
-                del st.session_state[key]
+    # lưu kết quả
+    st.session_state.last_prediction = final_money
 
-        st.rerun()
+    # ===== SAVE HISTORY =====
+    history_file = "history.csv"
+
+    record = input_dict.copy()
+    record["Tien_du_doan"] = final_money
+    record["Thoi_gian"] = datetime.now()
+
+    if os.path.exists(history_file):
+        old = pd.read_csv(history_file)
+        new = pd.concat([old, pd.DataFrame([record])], ignore_index=True)
+    else:
+        new = pd.DataFrame([record])
+
+    new.to_csv(history_file, index=False)
+
+    # ===== RESET =====
+    for key in [
+        "so_nguoi","so_may_lanh","so_quat","co_tu_lanh",
+        "gio_may_lanh","dien_tich","tang","loai_nha"
+    ]:
+        if key in st.session_state:
+            del st.session_state[key]
+
+    st.rerun()
 
     # ✅ hiển thị lại kết quả
     if "last_prediction" in st.session_state:
