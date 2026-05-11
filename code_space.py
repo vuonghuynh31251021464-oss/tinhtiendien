@@ -154,6 +154,25 @@ st.sidebar.write("""
 """)
 
 # ================= MENU =================
+def tinh_tien_dien(kwh):
+    bac = [
+        (50, 1806),
+        (50, 1866),
+        (100, 2167),
+        (100, 2729),
+        (100, 3050),
+        (float("inf"), 3151)
+    ]
+
+    tong = 0
+    for muc, gia in bac:
+        if kwh > muc:
+            tong += muc * gia
+            kwh -= muc
+        else:
+            tong += kwh * gia
+            break
+    return tong
 menu = st.sidebar.radio(
     "📌 Chức năng",
     ["📊 Khảo sát & Dự đoán", "📈 Phân tích dữ liệu"]
@@ -165,9 +184,14 @@ df = pd.read_csv("200_ho_gia_dinh_tien_dien.csv")
 # ================= XỬ LÝ =================
 df["Co_tu_lanh"] = df["Co_tu_lanh"].map({"Co": 1, "Khong": 0})
 df = pd.get_dummies(df, columns=["Loai_nha"])
-
+df["So_kWh"] = (
+    df["So_may_lanh"] * df["So_gio_bat_may_lanh_ngay"] * 1.2 +
+    df["So_quat"] * 0.08 * 24 +
+    df["So_nguoi_o"] * 1.5 +
+    df["Co_tu_lanh"] * 30
+)
 X = df.drop(["Tien_dien_thang_VND", "STT"], axis=1)
-y = df["Tien_dien_thang_VND"]
+y = df["So_kWh"]   
 
 # ================= TRAIN =================
 X_train, X_test, y_train, y_test = train_test_split(
@@ -215,10 +239,10 @@ if menu == "📊 Khảo sát & Dự đoán":
     input_df = pd.DataFrame([input_dict])
 
     if st.button("🚀 Dự đoán ngay"):
-        prediction = model.predict(input_df)[0]
+        kwh_pred = model.predict(input_df)[0]
+        tien = tinh_tien_dien(kwh_pred)
 
-    # lưu kết quả
-        st.session_state.last_prediction = int(prediction)
+        st.session_state.last_prediction = int(tien)
 
         history_file = "history.csv"
 
