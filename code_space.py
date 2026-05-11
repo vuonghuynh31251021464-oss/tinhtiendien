@@ -24,11 +24,6 @@ st.markdown("""
     border-color: #FFD700 !important;
 }
 
-/* số trên slider */
-.stSlider label {
-    color: #FFD700 !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 # ===== CSS HIỆN ĐẠI MÀU XANH =====
