@@ -25,7 +25,7 @@ st.markdown("""
 <style>
 .big-title {
     font-family: 'Poppins', sans-serif;
-    font-size: 60px;
+    font-size: 80px;
     font-weight: 800;
     text-align: center;
     color: #00c6ff;
