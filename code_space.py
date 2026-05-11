@@ -18,9 +18,7 @@ st.markdown("""
     background-color: #FFD700 !important;  /* vàng */
 }
 
-/* nút tròn slider */
-.stSlider > div[data-baseweb="slider"] span[role="slider"] {
-    background-color: #FFD700 !important;
+
 
 
 </style>
