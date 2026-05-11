@@ -18,6 +18,37 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+""", unsafe_allow_html=True)
+st.markdown("""
+<style>
+.big-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 60px;
+    font-weight: 800;
+    text-align: center;
+    color: #00c6ff;
+    letter-spacing: 2px;
+    
+    /* hiệu ứng glow */
+    text-shadow: 
+        0 0 10px rgba(0,198,255,0.7),
+        0 0 20px rgba(0,198,255,0.5),
+        0 0 30px rgba(0,198,255,0.3);
+}
+
+/* subtitle */
+.sub-title {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #ccefff;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+</style>
+""", unsafe_allow_html=True)
 # ===== CSS HIỆN ĐẠI MÀU XANH =====
 st.markdown("""
 <style>
@@ -64,7 +95,7 @@ section[data-testid="stSidebar"] {
 
 # ===== TITLE =====
 st.markdown('<p class="big-title">⚡ EZETRIC</p>', unsafe_allow_html=True)
-st.markdown("<center>AI dự đoán tiền điện thông minh</center>", unsafe_allow_html=True)
+st.markdown('<p class="sub-title">AI dự đoán tiền điện thông minh</p>', unsafe_allow_html=True)
 
 # ================= SIDEBAR INFO =================
 st.sidebar.markdown("## 📄 Thông tin dự án")
