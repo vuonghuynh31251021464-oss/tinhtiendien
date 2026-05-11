@@ -243,6 +243,8 @@ if menu == "📊 Khảo sát & Dự đoán":
                 del st.session_state[key]
 
         st.rerun()
+    if "last_prediction" in st.session_state:
+        st.success(f"💰 {st.session_state.last_prediction:,} VND / tháng")
 
     st.subheader("📜 Lịch sử")
 
