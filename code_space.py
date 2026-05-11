@@ -21,8 +21,7 @@ st.markdown("""
 /* nút tròn slider */
 .stSlider > div[data-baseweb="slider"] span[role="slider"] {
     background-color: #FFD700 !important;
-    border-color: #FFD700 !important;
-}
+
 
 </style>
 """, unsafe_allow_html=True)
