@@ -223,16 +223,6 @@ if menu == "📊 Khảo sát & Dự đoán":
         record = input_dict.copy()
         record["Tien_du_doan"] = int(prediction)
         record["Thoi_gian"] = datetime.now()
-        # RESET về mặc định
-        st.session_state.so_nguoi = 2
-        st.session_state.so_may_lanh = 1
-        st.session_state.so_quat = 2
-        st.session_state.co_tu_lanh = "Co"
-
-        st.session_state.gio_may_lanh = 5.0
-        st.session_state.dien_tich = 30
-        st.session_state.tang = 1
-        st.session_state.loai_nha = "Phong tro"
 
         if os.path.exists(history_file):
             old = pd.read_csv(history_file)
@@ -241,6 +231,16 @@ if menu == "📊 Khảo sát & Dự đoán":
             new = pd.DataFrame([record])
 
         new.to_csv(history_file, index=False)
+
+    # ✅ RESET đúng cách
+        for key in [
+            "so_nguoi", "so_may_lanh", "so_quat", "co_tu_lanh",
+            "gio_may_lanh", "dien_tich", "tang", "loai_nha"
+        ]:
+            if key in st.session_state:
+                del st.session_state[key]
+
+        st.rerun()
 
     st.subheader("📜 Lịch sử")
 
