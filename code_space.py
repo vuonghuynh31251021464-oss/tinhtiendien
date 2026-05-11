@@ -216,7 +216,9 @@ if menu == "📊 Khảo sát & Dự đoán":
 
     if st.button("🚀 Dự đoán ngay"):
         prediction = model.predict(input_df)[0]
-        st.success(f"💰 {int(prediction):,} VND / tháng")
+
+    # lưu kết quả
+        st.session_state.last_prediction = int(prediction)
 
         history_file = "history.csv"
 
@@ -232,7 +234,7 @@ if menu == "📊 Khảo sát & Dự đoán":
 
         new.to_csv(history_file, index=False)
 
-    # ✅ RESET đúng cách
+    # reset
         for key in [
             "so_nguoi", "so_may_lanh", "so_quat", "co_tu_lanh",
             "gio_may_lanh", "dien_tich", "tang", "loai_nha"
