@@ -194,56 +194,56 @@ if menu == "📊 Khảo sát & Dự đoán":
     if st.button("🚀 Dự đoán ngay"):
 
     # ===== AI đang suy nghĩ =====
-    with st.spinner("🤖 AI đang phân tích dữ liệu..."):
-        import time
-        time.sleep(1.5)  # delay cho mượt
+        with st.spinner("🤖 AI đang phân tích dữ liệu..."):
+            import time
+            time.sleep(1.5)  # delay cho mượt
 
-        kwh_pred = model.predict(input_df)[0]
-        tien = tinh_tien_dien(kwh_pred)
+            kwh_pred = model.predict(input_df)[0]
+            tien = tinh_tien_dien(kwh_pred)
 
     # ===== ANIMATION TIỀN =====
-    placeholder = st.empty()
+        placeholder = st.empty()
 
-    final_money = int(tien)
-    current = 0
+        final_money = int(tien)
+        current = 0
 
-    step = max(final_money // 50, 1)
+        step = max(final_money // 50, 1)
 
-    while current < final_money:
-        current += step
-        if current > final_money:
-            current = final_money
+        while current < final_money:
+            current += step
+            if current > final_money:
+                current = final_money
 
-        placeholder.success(f"💰 {current:,} VND / tháng")
-        time.sleep(0.02)
+            placeholder.success(f"💰 {current:,} VND / tháng")
+            time.sleep(0.02)
 
     # lưu kết quả
-    st.session_state.last_prediction = final_money
+        st.session_state.last_prediction = final_money
 
     # ===== SAVE HISTORY =====
-    history_file = "history.csv"
+        history_file = "history.csv"
 
-    record = input_dict.copy()
-    record["Tien_du_doan"] = final_money
-    record["Thoi_gian"] = datetime.now()
+        record = input_dict.copy()
+        record["Tien_du_doan"] = final_money
+        record["Thoi_gian"] = datetime.now()
 
-    if os.path.exists(history_file):
-        old = pd.read_csv(history_file)
-        new = pd.concat([old, pd.DataFrame([record])], ignore_index=True)
-    else:
-        new = pd.DataFrame([record])
+        if os.path.exists(history_file):
+            old = pd.read_csv(history_file)
+            new = pd.concat([old, pd.DataFrame([record])], ignore_index=True)
+        else:
+            new = pd.DataFrame([record])
 
-    new.to_csv(history_file, index=False)
+        new.to_csv(history_file, index=False)
 
     # ===== RESET =====
-    for key in [
-        "so_nguoi","so_may_lanh","so_quat","co_tu_lanh",
-        "gio_may_lanh","dien_tich","tang","loai_nha"
-    ]:
-        if key in st.session_state:
-            del st.session_state[key]
+        for key in [
+            "so_nguoi","so_may_lanh","so_quat","co_tu_lanh",
+            "gio_may_lanh","dien_tich","tang","loai_nha"
+        ]:
+            if key in st.session_state:
+                del st.session_state[key]
 
-    st.rerun()
+        st.rerun()
 
     # ✅ hiển thị lại kết quả
     if "last_prediction" in st.session_state:
