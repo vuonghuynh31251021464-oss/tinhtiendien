@@ -2,10 +2,11 @@ import pandas as pd
 import streamlit as st
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import matplotlib.pyplot as plt
 import os
 from datetime import datetime
+import numpy as np
 
 # ================= CẤU HÌNH =================
 st.set_page_config(page_title="Dự đoán tiền điện", layout="wide")
@@ -17,6 +18,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown('<p class="big-title">⚡ AI Dự Đoán Tiền Điện</p>', unsafe_allow_html=True)
+
+# ================= SIDEBAR INFO (THÊM) =================
+st.sidebar.markdown("## 📄 Thông tin dự án")
+st.sidebar.write("""
+- 📊 Dữ liệu: 200 hộ gia đình (giả lập khảo sát)
+- ⚠️ Bias: dữ liệu nhỏ, chưa phản ánh toàn bộ thực tế
+- 🧹 Data cleaning:
+    - Encode Có/Không → 1/0
+    - One-hot encoding loại nhà
+- 🤖 Model: Random Forest
+""")
 
 # ================= MENU =================
 menu = st.sidebar.radio(
@@ -117,10 +129,12 @@ elif menu == "📈 Phân tích 200 hộ dân":
 
     r2 = r2_score(y_test, y_pred)
     mae = mean_absolute_error(y_test, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))  # THÊM
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     col1.metric("🎯 R2 Score", f"{r2:.2f}")
     col2.metric("📉 MAE", f"{int(mae):,} VND")
+    col3.metric("📊 RMSE", f"{int(rmse):,} VND")  # THÊM
 
     st.info(f"Sai số trung bình khoảng {int(mae):,} VND")
 
