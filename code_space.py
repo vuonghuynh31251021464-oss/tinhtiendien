@@ -19,6 +19,53 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap');
+
+.big-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(60px, 8vw, 110px);
+    font-weight: 800;
+    text-align: center;
+
+    /* gradient chữ */
+    background: linear-gradient(90deg, #00c6ff, #0072ff, #00eaff, #0072ff);
+    background-size: 300%;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* animation chạy */
+    animation: shine 6s linear infinite;
+}
+
+@keyframes shine {
+    0% { background-position: 0% }
+    100% { background-position: 300% }
+}
+
+/* subtitle */
+.sub-title {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: #ccefff;
+    margin-top: -15px;
+    margin-bottom: 25px;
+}
+
+/* line glow dưới header */
+.glow-line {
+    height: 3px;
+    width: 60%;
+    margin: auto;
+    background: linear-gradient(90deg, transparent, #00eaff, transparent);
+    box-shadow: 0 0 10px #00eaff;
+    margin-bottom: 30px;
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 """, unsafe_allow_html=True)
 st.markdown("""
