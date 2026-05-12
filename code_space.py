@@ -8,10 +8,8 @@ import os
 from datetime import datetime
 import numpy as np
 
-# ================= CẤU HÌNH =================
 st.set_page_config(page_title="Ezetric - AI Tiền Điện", layout="wide")
 
-# ================= CSS GIỮ NGUYÊN =================
 st.markdown("""
 <style>
 .stSlider > div[data-baseweb="slider"] > div > div > div {
@@ -86,11 +84,9 @@ section[data-testid="stSidebar"] {
 </style>
 """, unsafe_allow_html=True)
 
-# ================= TITLE =================
 st.markdown('<p class="big-title">⚡ EZETRIC</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-title">AI dự đoán tiền điện thông minh</p>', unsafe_allow_html=True)
 
-# ================= SIDEBAR =================
 st.sidebar.markdown("## 📄 Thông tin dự án")
 st.sidebar.write("""
 - 📊 Dữ liệu: 200 hộ gia đình (giả lập)
@@ -104,14 +100,11 @@ menu = st.sidebar.radio(
     ["📊 Khảo sát & Dự đoán", "📈 Phân tích dữ liệu"]
 )
 
-# ================= LOAD DATA =================
 df = pd.read_csv("200_ho_gia_dinh_tien_dien.csv")
 
-# ================= XỬ LÝ =================
 df["Co_tu_lanh"] = df["Co_tu_lanh"].map({"Co": 1, "Khong": 0})
 df = pd.get_dummies(df, columns=["Loai_nha"])
 
-# 👉 tạo kWh gần thực tế
 df["So_kWh"] = (
     df["So_may_lanh"] * df["So_gio_bat_may_lanh_ngay"] * 1.2 +
     df["So_quat"] * 0.08 * 24 +
@@ -122,7 +115,6 @@ df["So_kWh"] = (
 X = df.drop(["Tien_dien_thang_VND", "STT", "So_kWh"], axis=1)
 y = df["So_kWh"]
 
-# ================= TRAIN =================
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
@@ -130,7 +122,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 model = RandomForestRegressor(n_estimators=120, random_state=42)
 model.fit(X_train, y_train)
 
-# ================= HÀM TIỀN ĐIỆN =================
 def tinh_tien_dien(kwh):
     bac = [
         (50, 1806),
@@ -150,7 +141,6 @@ def tinh_tien_dien(kwh):
             break
     return tong
 
-# ================= MỤC 1 =================
 if menu == "📊 Khảo sát & Dự đoán":
 
     st.header("🧠 Nhập thông tin")
@@ -187,40 +177,30 @@ if menu == "📊 Khảo sát & Dự đoán":
             input_dict[col] = 1 if col == f"Loai_nha_{loai_nha}" else 0
 
     input_df = pd.DataFrame([input_dict])
-
-    # ✅ FIX lỗi feature
     input_df = input_df.reindex(columns=X.columns, fill_value=0)
 
     if st.button("🚀 Dự đoán ngay"):
 
-    # ===== AI đang suy nghĩ =====
         with st.spinner("🤖 AI đang phân tích dữ liệu..."):
             import time
-            time.sleep(1.5)  # delay cho mượt
-
+            time.sleep(1.5)
             kwh_pred = model.predict(input_df)[0]
             tien = tinh_tien_dien(kwh_pred)
 
-    # ===== ANIMATION TIỀN =====
         placeholder = st.empty()
-
         final_money = int(tien)
         current = 0
-
         step = max(final_money // 50, 1)
 
         while current < final_money:
             current += step
             if current > final_money:
                 current = final_money
-
             placeholder.success(f"💰 {current:,} VND / tháng")
             time.sleep(0.02)
 
-    # lưu kết quả
         st.session_state.last_prediction = final_money
 
-    # ===== SAVE HISTORY =====
         history_file = "history.csv"
 
         record = input_dict.copy()
@@ -235,7 +215,6 @@ if menu == "📊 Khảo sát & Dự đoán":
 
         new.to_csv(history_file, index=False)
 
-    # ===== RESET =====
         for key in [
             "so_nguoi","so_may_lanh","so_quat","co_tu_lanh",
             "gio_may_lanh","dien_tich","tang","loai_nha"
@@ -245,7 +224,6 @@ if menu == "📊 Khảo sát & Dự đoán":
 
         st.rerun()
 
-    # ✅ hiển thị lại kết quả
     if "last_prediction" in st.session_state:
         st.success(f"💰 {st.session_state.last_prediction:,} VND / tháng")
 
@@ -257,7 +235,6 @@ if menu == "📊 Khảo sát & Dự đoán":
     else:
         st.write("Chưa có dữ liệu")
 
-# ================= MỤC 2 =================
 elif menu == "📈 Phân tích dữ liệu":
 
     st.header("📊 Phân tích AI")
